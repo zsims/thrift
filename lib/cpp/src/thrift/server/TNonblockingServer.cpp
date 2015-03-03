@@ -1102,7 +1102,11 @@ void TNonblockingServer::listenSocket(THRIFT_SOCKET s) {
 
   if (!port_) {
     sockaddr_in addr;
+#ifdef WIN32
+    int size = sizeof(addr);
+#else
     unsigned int size = sizeof(addr);
+#endif
     if (!getsockname(serverSocket_, reinterpret_cast<sockaddr*>(&addr), &size)) {
       listenPort_ = ntohs(addr.sin_port);
     } else {
